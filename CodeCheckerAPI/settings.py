@@ -49,7 +49,7 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
 
-ROOT_URLCONF = 'CodeCheckerAPI.urls'
+ROOT_URLCONF = 'CodeChecker.urls'
 
 TEMPLATES = [
     {
@@ -67,7 +67,7 @@ TEMPLATES = [
     },
 ]
 
-WSGI_APPLICATION = 'CodeCheckerAPI.wsgi.application'
+WSGI_APPLICATION = 'CodeChecker.wsgi.application'
 
 
 # Database
