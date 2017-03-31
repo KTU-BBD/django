@@ -15,7 +15,6 @@ import os
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
-
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/1.10/howto/deployment/checklist/
 
@@ -27,6 +26,32 @@ DEBUG = True
 
 ALLOWED_HOSTS = []
 
+# Directory where all folders with code should be created on master pc
+MASTER_MOUNTING_DIR = '/home/arviens/code'
+
+# Directory where the code is going to be mounted on container
+CONTAINER_MOUNTING_DIR = '/mnt/vol2'
+
+# Containers names
+CONTAINER_NAMES = {
+    'PYT': 'python-ubuntu',
+    'CSH': 'mono-ubuntu',
+    'CPP': 'cpp-ubuntu',
+}
+
+SCRIPT_NAMES = {
+    'PYT': 'script.py',
+    'CSH': 'script.csh',
+    'CPP': 'script.cpp',
+}
+
+
+
+# Which command to run on container start
+BASE_SCRIPT = 'script.sh'
+
+# File where resutls are stored
+RESULT_FILE = 'output.txt'
 
 # Application definition
 
@@ -42,10 +67,11 @@ INSTALLED_APPS = [
 ]
 
 REST_FRAMEWORK = {
-    'DEFAULT_PERMISSION_CLASSES': [
-        'rest_framework.permissions.IsAdminUser',
-    ],
-    'PAGE_SIZE': 10
+    'DEFAULT_PERMISSION_CLASSES': [],
+    'PAGE_SIZE': 10,
+    'DEFAULT_PARSER_CLASSES': (
+        'rest_framework.parsers.JSONParser',
+    )
 }
 
 MIDDLEWARE = [
@@ -78,7 +104,6 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'CodeCheckerAPI.wsgi.application'
 
-
 # Database
 # https://docs.djangoproject.com/en/1.10/ref/settings/#databases
 
@@ -88,7 +113,6 @@ DATABASES = {
         'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
     }
 }
-
 
 # Password validation
 # https://docs.djangoproject.com/en/1.10/ref/settings/#auth-password-validators
@@ -108,7 +132,6 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
-
 # Internationalization
 # https://docs.djangoproject.com/en/1.10/topics/i18n/
 
@@ -121,7 +144,6 @@ USE_I18N = True
 USE_L10N = True
 
 USE_TZ = True
-
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/1.10/howto/static-files/
