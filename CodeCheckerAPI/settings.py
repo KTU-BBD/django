@@ -50,8 +50,11 @@ SCRIPT_NAMES = {
 # Which command to run on container start
 BASE_SCRIPT = 'script.sh'
 
-# File where resutls are stored
+# File where results are stored
 RESULT_FILE = 'output.txt'
+
+# File where code inputs are stored
+INPUT_FILE = 'input.txt'
 
 # Application definition
 
