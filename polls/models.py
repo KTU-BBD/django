@@ -1,40 +1,24 @@
 from __future__ import unicode_literals
 
-from time import timezone
-from django.contrib.auth.models import User, Group
-from rest_framework import serializers
-
-import datetime
 from django.db import models
 
 
-class Question(models.Model):
-    question_text = models.CharField(max_length=200)
-    pub_date = models.DateTimeField('date published')
+class Code(models.Model):
+    language = models.CharField(max_length=3)
+    input_text = models.CharField(blank=False)
+    code = models.TextField(blank=False)
+    memory_limit = models.IntegerField(blank=True)
+    time_limit = models.IntegerField(blank=True)
 
-    def __str__(self):  # __unicode__ on Python 2
-        return self.question_text
+    def __init__(self, data):
+        self.language = data.language
+        self.code = data.code
+        self.memory_limit = data.memory_limit
+        self.time_limit = data.time_limit
 
-    def was_published_recently(self):
-        return self.pub_date >= timezone.now() - datetime.timedelta(days=1)
-
-
-class Choice(models.Model):
-    question = models.ForeignKey(Question)
-    choice_text = models.CharField(max_length=200)
-    votes = models.IntegerField(default=0)
-
-    def __str__(self):  # __unicode__ on Python 2
-        return self.choice_text
-
-
-class UserSerializer(serializers.HyperlinkedModelSerializer):
-    class Meta:
-        model = User
-        fields = ('url', 'username', 'email', 'groups')
-
-
-class GroupSerializer(serializers.HyperlinkedModelSerializer):
-    class Meta:
-        model = Group
-        fields = ('url', 'name')
+    def __init__(self, language, code, input_text, memory_limit, time_limit):
+        self.language = language
+        self.code = code
+        self.memory_limit = memory_limit
+        self.time_limit = time_limit
+        self.input_text = input_text

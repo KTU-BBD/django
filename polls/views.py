@@ -7,24 +7,13 @@ import docker
 from django.conf import settings
 from django.http import JsonResponse
 from django.utils.six import BytesIO
-from django.views.decorators.csrf import csrf_exempt
+from rest_framework.decorators import api_view
 from rest_framework.parsers import JSONParser
 
-from polls.models.code import CodeSerializer
+from polls.serializers import CodeSerializer
 
-"""
- TODO add empty request validation, also don't forget to return error codes
- sample request
-    {
-        "code": "varr = raw_input('Choose a number: ')\nttt = raw_input('Choose a number: ')\nprint varr\nprint ttt",
-        "input_text": "test\ntest",
-        "language": "PYT"
-    }
- Addr: http://127.0.0.1:8000/test/
 
-"""
-
-@csrf_exempt
+@api_view(['GET', 'POST'])
 def index(request):
     stream = BytesIO(request.body)
     data = JSONParser().parse(stream)
@@ -60,10 +49,10 @@ def index(request):
 
         api.start(container.get('Id'))
 
-        timee = 0
-        while client.containers.get(container.get('Id')).status == "running" and timee < 5:
+        sleep_timer = 0
+        while client.containers.get(container.get('Id')).status == "running" and sleep_timer < 5:
             time.sleep(0.1)
-            timee += 0.1
+            sleep_timer += 0.1
 
         filename = folder_path + '/' + settings.RESULT_FILE
         result = open(filename, 'r')
@@ -71,22 +60,13 @@ def index(request):
         result.close()
 
         shutil.rmtree(folder_path)
+        if sleep_timer < 5:
+            verdict = "OK"
+        else:
+            verdict = "OVERFLOW"
 
+        response = {'verdict': verdict, 'language': serializer.data['language'], 'output': results}
 
-        return JsonResponse(data=results, safe=False)
+        return JsonResponse(response)
     else:
         return JsonResponse(serializer.errors)
-
-def dokcer(data):
-    print settings.MOUNTING_DIR
-    # client = docker.from_env()
-    # api = client.api
-    # container = api.create_container(
-    # 'python-ubuntu', 'script.sh', volumes=['/mnt/vol2'],
-    # host_config=api.create_host_config(binds={
-    #     settings.MOUNTING_DIR: {
-    #         'bind': '/mnt/vol2',
-    #         'mode': 'rw',
-    #     }
-    # })
-    # )

@@ -24,7 +24,7 @@ SECRET_KEY = 'n4_yz!g@ql%gb%7ir^&#5k^1q7e+^e&%z%d3=dkfj5=nxwnq!q'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ["158.129.25.53", "127.0.0.1"]
 
 # Directory where all folders with code should be created on master pc
 MASTER_MOUNTING_DIR = '/home/arviens/code'
@@ -33,10 +33,11 @@ MASTER_MOUNTING_DIR = '/home/arviens/code'
 CONTAINER_MOUNTING_DIR = '/mnt/vol2'
 
 # Containers names
+# TODO change to normal names
 CONTAINER_NAMES = {
-    'PYT': 'python-ubuntu',
-    'CSH': 'mono-ubuntu',
-    'CPP': 'cpp-ubuntu',
+    'PYT': 'ktubbd/python',
+    'CSH': 'ktubbd/python',
+    'CPP': 'ktubbd/python',
 }
 
 SCRIPT_NAMES = {
@@ -44,8 +45,6 @@ SCRIPT_NAMES = {
     'CSH': 'script.csh',
     'CPP': 'script.cpp',
 }
-
-
 
 # Which command to run on container start
 BASE_SCRIPT = 'script.sh'

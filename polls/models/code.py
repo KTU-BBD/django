@@ -1,7 +1,6 @@
 import datetime
 from django.db import models
 from rest_framework import serializers
-from django.conf import settings
 
 
 class Code(models.Model):
@@ -24,16 +23,3 @@ class Code(models.Model):
         self.time_limit = time_limit
         self.input_text = input_text
 
-
-class CodeSerializer(serializers.ModelSerializer):
-    SUPPORTED_LANGUAGES = settings.CONTAINER_NAMES.keys()
-    language = serializers.ChoiceField(required=True, error_messages={'required': 'Language field is required'},
-                                       choices=SUPPORTED_LANGUAGES)
-    code = serializers.CharField(required=True, error_messages={'required': 'Code field is required'})
-    input_text = serializers.CharField(required=True, error_messages={'required': 'Input text field is required'})
-    memory_limit = serializers.IntegerField(required=False)
-    time_limit = serializers.IntegerField(required=False)
-
-    class Meta:
-        model = Code
-        fields = ('language', 'input_text', 'code', 'memory_limit', 'time_limit')
