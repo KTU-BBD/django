@@ -44,15 +44,21 @@ def index(request):
                     'bind': settings.CONTAINER_MOUNTING_DIR,
                     'mode': 'rw',
                 }
-            })
+
+            },
+                mem_limit=(str(serializer.data['memory_limit']) + "m"),
+            ),
+            network_disabled=True,
         )
 
         api.start(container.get('Id'))
 
-        sleep_timer = 0
-        while client.containers.get(container.get('Id')).status == "running" and sleep_timer < 5:
-            time.sleep(0.1)
-            sleep_timer += 0.1
+        start = time.time()
+        while client.containers.get(container.get('Id')).status == "running":
+            time.sleep(0.0001)
+        end = time.time()
+
+        time_spent = end - start
 
         filename = folder_path + '/' + settings.RESULT_FILE
         result = open(filename, 'r')
@@ -60,12 +66,17 @@ def index(request):
         result.close()
 
         shutil.rmtree(folder_path)
-        if sleep_timer < 5:
+        if time_spent < serializer.data['time_limit'] / 1000:
             verdict = "OK"
         else:
             verdict = "OVERFLOW"
 
-        response = {'verdict': verdict, 'language': serializer.data['language'], 'output': results}
+        response = {
+            'verdict': verdict,
+            'language': serializer.data['language'],
+            'output': results,
+            'time_spent': time_spent,
+        }
 
         return JsonResponse(response)
     else:

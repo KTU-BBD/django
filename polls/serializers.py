@@ -10,8 +10,8 @@ class CodeSerializer(serializers.ModelSerializer):
                                        choices=SUPPORTED_LANGUAGES)
     code = serializers.CharField(required=True, error_messages={'required': 'Code field is required'})
     input_text = serializers.CharField(required=True, error_messages={'required': 'Input text field is required'})
-    memory_limit = serializers.IntegerField(required=False)
-    time_limit = serializers.IntegerField(required=False)
+    memory_limit = serializers.IntegerField(required=True)
+    time_limit = serializers.IntegerField(required=True)
 
     class Meta:
         model = Code
