@@ -35,9 +35,9 @@ CONTAINER_MOUNTING_DIR = '/mnt/vol2'
 # Containers names
 # TODO change to normal names
 CONTAINER_NAMES = {
-    'PYT': 'ktubbd/python',
-    'CSH': 'ktubbd/python',
-    'CPP': 'ktubbd/python',
+    'PYT': 'ktubbd/python:latest',
+    'CSH': 'ktubbd/python:latest',
+    'CPP': 'ktubbd/python:latest',
 }
 
 SCRIPT_NAMES = {

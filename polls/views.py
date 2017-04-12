@@ -24,6 +24,8 @@ def index(request):
         folder_path = settings.MASTER_MOUNTING_DIR + '/' + custom_folder_name
         os.makedirs(folder_path)
 
+        limit_in_seconds = serializer.data['time_limit'] / 1000
+
         code_file_path = folder_path + '/' + settings.SCRIPT_NAMES[serializer.data['language']]
         code_file = open(code_file_path, 'w')
         code_file.write(serializer.data['code'])
@@ -38,27 +40,32 @@ def index(request):
         api = client.api
         container_name = settings.CONTAINER_NAMES[serializer.data['language']]
         container = api.create_container(
-            container_name, settings.BASE_SCRIPT, volumes=[settings.CONTAINER_MOUNTING_DIR],
-            host_config=api.create_host_config(binds={
-                folder_path: {
-                    'bind': settings.CONTAINER_MOUNTING_DIR,
-                    'mode': 'rw',
-                }
-
-            },
+            image=container_name,
+            command=settings.BASE_SCRIPT,
+            volumes=[settings.CONTAINER_MOUNTING_DIR],
+            host_config=api.create_host_config(
+                binds={
+                    folder_path: {
+                        'bind': settings.CONTAINER_MOUNTING_DIR,
+                        'mode': 'rw',
+                    }
+                },
                 mem_limit=(str(serializer.data['memory_limit']) + "m"),
+                cpu_period=1000
             ),
             network_disabled=True,
+            stop_timeout=1
         )
 
         api.start(container.get('Id'))
 
         start = time.time()
-        while client.containers.get(container.get('Id')).status == "running":
+        while client.containers.get(container.get('Id')).status == "running" and time.time() - start < limit_in_seconds:
             time.sleep(0.0001)
         end = time.time()
 
         time_spent = end - start
+        print time_spent
 
         filename = folder_path + '/' + settings.RESULT_FILE
         result = open(filename, 'r')
@@ -66,7 +73,7 @@ def index(request):
         result.close()
 
         shutil.rmtree(folder_path)
-        if time_spent < serializer.data['time_limit'] / 1000:
+        if time_spent < limit_in_seconds:
             verdict = "OK"
         else:
             verdict = "OVERFLOW"
