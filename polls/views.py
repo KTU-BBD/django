@@ -24,7 +24,7 @@ def index(request):
         folder_path = settings.MASTER_MOUNTING_DIR + '/' + custom_folder_name
         os.makedirs(folder_path)
 
-        limit_in_seconds = serializer.data['time_limit'] / 1000
+        limit_in_seconds = serializer.data['timeLimit'] / 1000
 
         code_file_path = folder_path + '/' + settings.SCRIPT_NAMES[serializer.data['language']]
         code_file = open(code_file_path, 'w')
@@ -33,7 +33,7 @@ def index(request):
 
         input_file_path = folder_path + '/' + settings.INPUT_FILE
         input_file = open(input_file_path, 'w')
-        input_file.write(serializer.data['input_text'])
+        input_file.write(serializer.data['inputText'])
         input_file.close()
 
         client = docker.from_env()
@@ -50,7 +50,7 @@ def index(request):
                         'mode': 'rw',
                     }
                 },
-                mem_limit=(str(serializer.data['memory_limit']) + "m"),
+                mem_limit=(str(serializer.data['memoryLimit']) + "m"),
                 cpu_period=1000
             ),
             network_disabled=True,
@@ -65,7 +65,6 @@ def index(request):
         end = time.time()
 
         time_spent = end - start
-        print time_spent
 
         filename = folder_path + '/' + settings.RESULT_FILE
         result = open(filename, 'r')
@@ -82,7 +81,7 @@ def index(request):
             'verdict': verdict,
             'language': serializer.data['language'],
             'output': results,
-            'time_spent': time_spent,
+            'timeSpent': time_spent,
         }
 
         return JsonResponse(response)

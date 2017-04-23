@@ -7,7 +7,7 @@ from CodeCheckerAPI import settings
 
 class DockerTestCase(TestCase):
     def test_docker_service_is_running(self):
-        self.assertTrue('docker' in subprocess.check_output(['ps', '-A']), 'Docker service is not running')
+        self.assertTrue(' docker' in subprocess.check_output(['ps', '-A']), 'Docker service is not running')
 
     def test_docker_contains_images(self):
         api = docker.from_env().api
