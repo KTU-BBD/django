@@ -27,23 +27,25 @@ DEBUG = True
 ALLOWED_HOSTS = ["158.129.25.53", "127.0.0.1"]
 
 # Directory where all folders with code should be created on master pc
-MASTER_MOUNTING_DIR = '/home/arviens/code'
+MASTER_MOUNTING_DIR = '/tmp/code'
 
 # Directory where the code is going to be mounted on container
-CONTAINER_MOUNTING_DIR = '/mnt/vol2'
+CONTAINER_MOUNTING_DIR = '/mnt/code'
 
 # Containers names
 # TODO change to normal names
 CONTAINER_NAMES = {
-    'PYT': 'ktubbd/python:latest',
-    'CSH': 'ktubbd/python:latest',
-    'CPP': 'ktubbd/python:latest',
+    'PYT27': 'ktubbd/python2.7:latest',
+    'PYT3': 'ktubbd/python3:latest',
+    'CSH': 'ktubbd/mono:latest',
+    'CPP5.4.0': 'ktubbd/cpp5.4.0:latest',
 }
 
 SCRIPT_NAMES = {
-    'PYT': 'script.py',
-    'CSH': 'script.csh',
-    'CPP': 'script.cpp',
+    'PYT27': 'script.py',
+    'PYT3': 'script.py',
+    'CSH': 'script.cs',
+    'CPP5.4.0': 'script.cpp',
 }
 
 # Which command to run on container start
@@ -52,8 +54,17 @@ BASE_SCRIPT = 'script.sh'
 # File where results are stored
 RESULT_FILE = 'output.txt'
 
+# File where results are stored
+ERROR_FILE = 'error.txt'
+
 # File where code inputs are stored
 INPUT_FILE = 'input.txt'
+
+# File where compilation errors are stored
+COMPILATION_ERROR_FILE = 'compilation_error.txt'
+
+# File where peak ram and run time are stored
+TIME_FILE = 'time.txt'
 
 # Application definition
 

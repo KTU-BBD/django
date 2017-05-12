@@ -3,7 +3,7 @@ backports.ssl-match-hostname==3.5.0.1
 Django==1.10.6
 djangorestframework==3.6.2
 djangorestframework-jwt==1.10.0
-docker==2.2.0
+docker==2.2.1
 docker-pycreds==0.2.1
 ipaddress==1.0.18
 packaging==16.8
