@@ -108,7 +108,7 @@ def index(request):
             verdict = "RUNTIME_ERROR"
             results = runtime_errors
 
-        if float(runtime_information[1]) > limit_in_seconds:
+        if float(runtime_information[1]) >= limit_in_seconds:
             verdict = "TIME_OVERFLOW"
             results = ""
 
